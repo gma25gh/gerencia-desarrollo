@@ -84,6 +84,66 @@
       border-radius: 20px;
     }
 
+    /* ─── Modal ─── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 14, 26, 0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: rgba(26, 32, 53, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .modal-content.border-accent { border-color: rgba(79,158,255,0.4); }
+    .modal-content.border-gold { border-color: rgba(240,165,0,0.4); }
+    .modal-content.border-danger { border-color: rgba(255,92,92,0.4); }
+    .modal-content.border-emerald { border-color: rgba(0,200,150,0.4); }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
     /* ─── Fade-in on scroll ─── */
     .fade-up {
       opacity: 0;
@@ -247,6 +307,138 @@
     .delay-300 { transition-delay: 0.3s; }
     .delay-400 { transition-delay: 0.4s; }
     .delay-500 { transition-delay: 0.5s; }
+
+    /* ─── Modal Specific Animations & Graphics ─── */
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+      opacity: 0;
+      transform: translateX(-10px);
+      animation: slideInRight 0.5s forwards;
+    }
+    .modal-overlay.active .checklist-item:nth-child(1) { animation-delay: 0.2s; }
+    .modal-overlay.active .checklist-item:nth-child(2) { animation-delay: 0.4s; }
+    .modal-overlay.active .checklist-item:nth-child(3) { animation-delay: 0.6s; }
+
+    @keyframes slideInRight {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+    }
+    .flow-node {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-align: center;
+    }
+    .flow-arrow {
+      flex: 1;
+      height: 2px;
+      margin: 0 10px;
+      background: linear-gradient(90deg, transparent, currentColor, transparent);
+      position: relative;
+    }
+    .flow-arrow::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -4px;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 5px solid currentColor;
+    }
+
+    .solar-diagram {
+       position: relative;
+       height: 120px;
+       border-bottom: 2px solid rgba(255,255,255,0.2);
+       margin-top: 1rem;
+       overflow: hidden;
+    }
+    .sun {
+       position: absolute;
+       width: 24px;
+       height: 24px;
+       background: #f0a500;
+       border-radius: 50%;
+       box-shadow: 0 0 15px #f0a500;
+       animation: sunPath 4s ease-in-out infinite alternate;
+    }
+    @keyframes sunPath {
+       0% { bottom: 10px; left: 10%; transform: scale(0.8); opacity: 0.5;}
+       50% { bottom: 80px; left: 50%; transform: scale(1.2); opacity: 1;}
+       100% { bottom: 30px; left: 80%; transform: scale(1); opacity: 0.8;}
+    }
+    .building-shield {
+       position: absolute;
+       bottom: 0;
+       left: 50%;
+       transform: translateX(-50%);
+       width: 60px;
+       height: 50px;
+       background: rgba(255,255,255,0.1);
+       border-top: 4px solid #ff5c5c;
+       border-left: 4px solid #ff5c5c;
+       border-top-left-radius: 8px;
+    }
+
+    .finance-chart {
+      height: 100px;
+      width: 100%;
+      background: linear-gradient(180deg, rgba(0,200,150,0.2) 0%, transparent 100%);
+      border-bottom: 2px solid #00c896;
+      border-left: 2px solid rgba(255,255,255,0.2);
+      position: relative;
+      margin-top: 1rem;
+      clip-path: polygon(0 100%, 0 80%, 20% 70%, 40% 50%, 60% 60%, 80% 30%, 100% 10%, 100% 100%);
+      animation: growChart 1.5s ease-out forwards;
+      transform-origin: bottom;
+      opacity: 0;
+    }
+    .modal-overlay.active .finance-chart {
+      opacity: 1;
+    }
+    @keyframes growChart {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+
+    /* ─── Image Standardization ─── */
+    .section-banner {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      opacity: 0.95;
+    }
+    @media (min-width: 768px) {
+      .section-banner { height: 400px; }
+    }
+
+    .modal-banner {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      opacity: 0.85;
+    }
+    @media (min-width: 768px) {
+      .modal-banner { height: 220px; }
+    }
   </style>
 </head>
 <body class="bg-grid">
@@ -317,6 +509,11 @@
         </div>
       </div>
 
+      <!-- Hero Image Banner -->
+      <div class="fade-up delay-300 my-16">
+        <img src="img/hero_inicio_norcon_gerencia_desarrollo_1773762938190.png" alt="Gerencia de Desarrollo de Proyectos NORCON" class="section-banner">
+      </div>
+
       <!-- Scroll indicator -->
       <div class="scroll-indicator absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 text-xs font-medium">
         <span>Scroll</span>
@@ -340,7 +537,12 @@
         <h2 class="font-extrabold text-white" style="font-size:clamp(1.6rem,3.5vw,2.6rem);">
           Sistema de Viabilidad <span class="grad-text">Cuádruple Filtro</span>
         </h2>
-        <p class="text-slate-400 mt-3 max-w-xl">Cada proyecto pasa por cuatro filtros críticos antes de recibir recursos de diseño o inversión.</p>
+        <p class="text-slate-400 mt-3 max-w-xl">No arriesgamos capital en suposiciones. Cada proyecto debe superar cuatro capas de auditoría técnica y financiera antes de su ejecución.</p>
+      </div>
+
+      <!-- Viability System Image -->
+      <div class="fade-up mb-12">
+        <img src="img/sistema_viabilidad_cuadruple_filtro_norcon_1773762680036.png" alt="Sistema de Viabilidad Cuádruple Filtro NORCON" class="section-banner">
       </div>
 
       <div class="bento-grid">
@@ -360,6 +562,10 @@
             Si el papel está manchado, el negocio se congela.<br/>
             <strong class="text-white">Cero riesgo legal.</strong> Revisión de escrituras, inhibiciones, hipotecas y cargas antes de cualquier avance.
           </p>
+          <button onclick="openModal('modal-legal')" class="mt-4 text-xs font-bold tracking-widest text-[#4f9eff] uppercase hover:text-white transition-colors flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            Ver Detalle Profundo
+          </button>
           <div class="mt-5 pt-5 border-t border-white/5 flex items-center gap-2">
             <span class="semaforo-dot" style="background:#00c896;color:#00c896;"></span>
             <span class="text-xs text-slate-400 font-medium">Validación previa a todo compromiso</span>
@@ -380,6 +586,10 @@
           <p class="text-slate-300 leading-relaxed">
             Validación de <strong class="text-white">m² construibles</strong> y factibilidad real de agua y energía. Sin sorpresas en la Municipalidad, DPEC ni Aguas de Corrientes S.A.
           </p>
+          <button onclick="openModal('modal-urbano')" class="mt-4 text-xs font-bold tracking-widest text-[#f0a500] uppercase hover:text-white transition-colors flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            Ver Detalle Profundo
+          </button>
           <div class="mt-5 pt-5 border-t border-white/5 flex items-center gap-2">
             <span class="semaforo-dot" style="background:#f0a500;color:#f0a500;"></span>
             <span class="text-xs text-slate-400 font-medium">Depende de jurisdicción local</span>
@@ -406,6 +616,10 @@
           <p class="text-red-300 mt-3 text-sm leading-relaxed">
             Un diseño caprichoso en el <strong>Chaco/Corrientes</strong> dispara los costos constructivos y <strong>arruina la rentabilidad</strong>.
           </p>
+          <button onclick="openModal('modal-critico')" class="mt-4 text-xs font-bold tracking-widest text-[#ff5c5c] uppercase hover:text-white transition-colors flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            Ver Detalle Profundo
+          </button>
           <div class="mt-5 pt-5 border-t border-red-900/30 flex items-center gap-2">
             <span class="semaforo-dot" style="background:#ff5c5c;color:#ff5c5c;"></span>
             <span class="text-xs text-red-300 font-semibold">Filtro bloqueante — sin excepción</span>
@@ -426,6 +640,10 @@
           <p class="text-slate-300 leading-relaxed">
             Cálculo de <strong class="text-white">cabida y margen de ganancia real</strong> antes de invertir el primer peso. Modelo financiero con costo por m² local e indicadores de rentabilidad mínima aceptable.
           </p>
+          <button onclick="openModal('modal-financiero')" class="mt-4 text-xs font-bold tracking-widest text-[#00c896] uppercase hover:text-white transition-colors flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            Ver Detalle Profundo
+          </button>
           <div class="mt-5 pt-5 border-t border-emerald-900/30 flex items-center gap-2">
             <span class="semaforo-dot" style="background:#00c896;color:#00c896;"></span>
             <span class="text-xs font-medium" style="color:#00c896;">Decisión basada en números</span>
@@ -451,13 +669,18 @@
         <h2 class="font-extrabold text-white" style="font-size:clamp(1.6rem,3.5vw,2.6rem);">
           Operación <span class="grad-gold">Día a Día</span>
         </h2>
-        <p class="text-slate-400 mt-3 max-w-xl">Estructura de trabajo desde la Auditoría de Choque hasta la gestión cotidiana en campo y Municipio.</p>
+        <p class="text-slate-400 mt-3 max-w-xl">Gestión activa y seguimiento riguroso para que cada m2 proyectado sea un m2 construido bajo estándar NORCON.</p>
+      </div>
+
+      <!-- Operation Image -->
+      <div class="fade-up mb-12">
+        <img src="img/operacion_dia_a_dia_norcon_gestion_1773762535717.png" alt="Operación Día a Día NORCON" class="section-banner">
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <!-- Auditoría de Choque -->
-        <div class="glass p-7 fade-up delay-100" style="md:grid-column:span 1;">
+        <div class="glass p-7 fade-up delay-100">
           <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style="background:rgba(240,165,0,0.12);border:1px solid rgba(240,165,0,0.3);">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f0a500" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
@@ -554,6 +777,11 @@
         <p class="text-slate-400 mt-3 max-w-xl">Cuatro reportes automáticos semanales para que la Dirección tome decisiones con información real, no suposiciones.</p>
       </div>
 
+      <!-- Dashboard Image -->
+      <div class="fade-up mb-12">
+        <img src="img/tablero_control_norcon_espanol_dashboard_v2_1773761866623.png" alt="Dashboard de Control NORCON" class="section-banner">
+      </div>
+
       <div class="bento-grid">
 
         <div class="glass p-7 fade-up delay-100 flex gap-5 items-start">
@@ -618,6 +846,11 @@
         <p class="text-slate-400 mt-3 max-w-xl">El momento en que el proyecto de Desarrollo transfiere el mando con cero ambigüedades al equipo de Obra.</p>
       </div>
 
+      <!-- Handover Image -->
+      <div class="fade-up mb-12">
+        <img src="img/protocolo_traspaso_norcon_handover_1773761948410.png" alt="Protocolo de Traspaso NORCON" class="section-banner">
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <div class="glass p-7 fade-up delay-100" style="border-top:3px solid rgba(79,158,255,0.6);border-radius:0 0 20px 20px;">
@@ -670,18 +903,15 @@
   <section id="vision" style="padding-bottom:100px;">
     <div class="max-w-4xl mx-auto px-6 text-center">
 
-      <div class="fade-up">
-        <div class="flex justify-center mb-6">
-          <div class="w-16 h-16 rounded-2xl flex items-center justify-center" style="background:linear-gradient(135deg,rgba(79,158,255,0.2),rgba(240,165,0,0.1));border:1px solid rgba(79,158,255,0.25);">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f9eff" stroke-width="1.5"><eye/><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            <svg style="display:block;" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#4f9eff" stroke-width="1.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          </div>
-        </div>
+    <div class="max-w-6xl mx-auto px-6">
+      <!-- Vision Image -->
+      <div class="fade-up mb-12">
+        <img src="img/mauro_alegre_vision_norcon_v3_final_1773762328848.png" alt="Visión a 15 Años - Arq. Mauro Alegre" class="section-banner">
+      </div>
+    </div>
 
-        <div class="flex justify-center mb-4">
-          <div style="width:3px;height:32px;background:linear-gradient(to bottom,#f0a500,transparent);border-radius:2px;"></div>
-        </div>
-        <span class="font-semibold tracking-widest text-sm uppercase grad-gold block mb-6">Visión a 15 Años</span>
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="fade-up">
 
         <h2 class="font-extrabold text-white mb-8" style="font-size:clamp(1.8rem,4vw,3rem);line-height:1.2;">
           Arquitectura de <span class="grad-gold">Confianza</span>
@@ -764,7 +994,138 @@
         }
       });
     });
+
+    // ─── Modal Logic ───
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+      }
+    }
+
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Cerrar si se clickea fuera del contenido del modal
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModal(this.id);
+        }
+      });
+    });
   </script>
+
+  <!-- ═══════════════════════════════ MODALS ═══════════════════════════════ -->
+  <!-- Modal Legal -->
+  <div id="modal-legal" class="modal-overlay">
+    <div class="modal-content border-accent">
+      <button class="modal-close" onclick="closeModal('modal-legal')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <img src="img/filtro_legal_documentos_espanol_1773761261023.png" alt="Auditoría Legal" class="modal-banner">
+      
+      <span class="text-xs font-bold tracking-widest text-[#4f9eff] uppercase">FILTRO LEGAL (Auditoría de Dominio)</span>
+      <h3 class="text-white font-bold text-2xl mt-2 mb-4">Seguridad Jurídica y Riesgo Cero</h3>
+      
+      <div id="content-legal" class="text-slate-300 leading-relaxed text-sm space-y-4">
+        
+        <div class="checklist-item">
+          <svg class="text-accent flex-shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <p><strong class="text-white">Validación Registral:</strong> Revisión exhaustiva de informes de dominio e inhibiciones para asegurar una escritura perfecta.</p>
+        </div>
+        
+        <div class="checklist-item">
+          <svg class="text-accent flex-shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <p><strong class="text-white">Gestión de Sucesiones:</strong> Auditoría de declaratorias de herederos y tracto abreviado antes de comprometer capital.</p>
+        </div>
+
+        <div class="checklist-item">
+          <svg class="text-accent flex-shrink-0" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <p><strong class="text-white">Blindaje Contractual:</strong> Estructuración de boletos y fideicomisos con cláusulas de protección para el inversor.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Urbano -->
+  <div id="modal-urbano" class="modal-overlay">
+    <div class="modal-content border-gold">
+      <button class="modal-close" onclick="closeModal('modal-urbano')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <img src="img/filtro_urbanistico_profesional_campo_1773761277771.png" alt="Ingeniería y Urbanismo" class="modal-banner">
+
+      <span class="text-xs font-bold tracking-widest text-[#f0a500] uppercase">FILTRO URBANÍSTICO (Gestión en Campo)</span>
+      <h3 class="text-white font-bold text-2xl mt-2 mb-4">Viabilidad Burocrática e Infraestructura</h3>
+      
+      <div id="content-urbano" class="text-slate-300 leading-relaxed text-sm space-y-4">
+        <p><strong class="text-white text-[#f0a500]">Normativa Local:</strong> Verificación presencial de FOT/FOS, retiros y retiros de línea municipal en Resistencia/Corrientes.</p>
+        <p><strong class="text-white text-[#f0a500]">Factibilidad de Servicios:</strong> Gestión directa ante SECHEEP/DPEC (energía), SAMEEP/Aguas de Corrientes (agua/cloacas) y APA (riesgo hídrico).</p>
+        <p><strong class="text-white text-[#f0a500]">Gestión de Expedientes:</strong> Seguimiento diario en Obras Particulares para acortar tiempos de aprobación.</p>
+
+        <div class="flow-diagram text-[#f0a500]">
+          <div class="flow-node bg-[#f0a500]/20 border border-[#f0a500]/40">Terreno</div>
+          <div class="flow-arrow"></div>
+          <div class="flow-node bg-[#f0a500]/20 border border-[#f0a500]/40">Organismos</div>
+          <div class="flow-arrow"></div>
+          <div class="flow-node bg-[#f0a500]/20 border border-[#f0a500]/40 text-white">Aprobado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Crítico -->
+  <div id="modal-critico" class="modal-overlay">
+    <div class="modal-content border-danger">
+      <button class="modal-close" onclick="closeModal('modal-critico')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <img src="img/filtro_critico_arquitectura_nea_1773761295571.png" alt="Arquitectura y Clima" class="modal-banner">
+
+      <span class="text-xs font-bold tracking-widest text-[#ff5c5c] uppercase">FILTRO CRÍTICO (Filtro de Realidad MALYc)</span>
+      <h3 class="text-white font-bold text-2xl mt-2 mb-4">Arquitectura de Confianza: Adaptación Climática NEA</h3>
+      
+      <div id="content-critico" class="text-slate-300 leading-relaxed text-sm space-y-4">
+        <p><strong class="text-white text-[#ff5c5c]">Control Térmico Pasivo:</strong> Implementación de muros dobles e inercia térmica para combatir el calor extremo del Chaco.</p>
+        <p><strong class="text-white text-[#ff5c5c]">Estrategia Solar:</strong> Protección absoluta de fachadas al Oeste mediante parasoles y aleros profundos.</p>
+        <p><strong class="text-white text-[#ff5c5c]">Materialidad Honesta:</strong> Uso de hormigón, ladrillo visto y metal; materiales que envejecen con dignidad y bajo mantenimiento en nuestra región.</p>
+        
+        <div class="solar-diagram">
+          <div class="sun"></div>
+          <div class="building-shield"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Financiero -->
+  <div id="modal-financiero" class="modal-overlay">
+    <div class="modal-content border-emerald">
+      <button class="modal-close" onclick="closeModal('modal-financiero')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <img src="img/filtro_financiero_rentabilidad_premium_1773761313732.png" alt="Finanzas y Rentabilidad" class="modal-banner">
+
+      <span class="text-xs font-bold tracking-widest text-[#00c896] uppercase">FILTRO FINANCIERO (Costo Paramétrico)</span>
+      <h3 class="text-white font-bold text-2xl mt-2 mb-4">Ingeniería Financiera y Rentabilidad</h3>
+      
+      <div id="content-financiero" class="text-slate-300 leading-relaxed text-sm space-y-4">
+        <p><strong class="text-white text-[#00c896]">Análisis de Cabida:</strong> Maximizamos el rendimiento de m² vendibles sobre m² construidos (Eficiencia Yield).</p>
+        <p><strong class="text-white text-[#00c896]">Indicadores de Éxito:</strong> Entrega de ROI (Retorno), TIR (Tasa Interna) y Punto de Equilibrio antes de iniciar la inversión.</p>
+        <p><strong class="text-white text-[#00c896]">Blindaje Inflacionario:</strong> Costo paramétrico basado en el índice CAC y valores reales del mercado local actualizados mensualmente.</p>
+
+        <div class="finance-chart"></div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
